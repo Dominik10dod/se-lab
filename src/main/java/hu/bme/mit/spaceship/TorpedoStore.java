@@ -14,10 +14,12 @@ public class TorpedoStore {
 
   private int torpedoCount = 0;
 
+  private Random generator = new Random();
+
   public TorpedoStore(int numberOfTorpedos){
     this.torpedoCount = numberOfTorpedos;
 
-    // update failure rate if it was specified in an environment variable
+    // update failure rate if it was specified in an environment
     String failureEnv = System.getenv("IVT_RATE");
     if (failureEnv != null){
       try {
@@ -30,18 +32,18 @@ public class TorpedoStore {
 
   public boolean fire(int numberOfTorpedos){
     if(numberOfTorpedos < 1 || numberOfTorpedos > this.torpedoCount){
-      new IllegalArgumentException("numberOfTorpedos");
+      throw new IllegalArgumentException("numberOfTorpedos"); //Nem írt semmit, ugyhogy kommentelek: ide írtam egy throw-ot
     }
 
     boolean success = false;
 
     // simulate random overheating of the launcher bay which prevents firing
-    Random generator = new Random();
-    double r = generator.nextDouble();
+    
+    double r = generator.nextDouble(); //Itt volt egy kis variálás
 
     if (r >= FAILURE_RATE) {
       // successful firing
-      this.torpedoCount =- numberOfTorpedos;
+      this.torpedoCount -= numberOfTorpedos; //Easy peasy
       success = true;
     } else {
       // simulated failure
